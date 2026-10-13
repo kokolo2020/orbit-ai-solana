@@ -19,7 +19,7 @@ function ui(){
 async function json(url){let r=await fetch(url);if(!r.ok)throw Error('HTTP '+r.status);return r.json()}
 function pairPick(arr,address){return (arr||[]).filter(p=>p.chainId==='solana'&&p.baseToken?.address===address&&Number(p.priceUsd)>0).sort((a,b)=>Number(b.liquidity?.usd||0)-Number(a.liquidity?.usd||0))[0]}
 function candidate(p){let price=Number(p.priceUsd),liquidity=Number(p.liquidity?.usd||0),volume=Number(p.volume?.h24||0),change=Number(p.priceChange?.h24),buys=Number(p.txns?.h24?.buys||0),sells=Number(p.txns?.h24?.sells||0),age=Date.now()-Number(p.pairCreatedAt||0);
- return {id:p.baseToken.address,symbol:p.baseToken.symbol||'?',price,liquidity,volume,change:Number.isFinite(change)&&p.priceChange?.h24!=null?change:null,buys,sells,age,link:p.url,eligible:age>=86400000&&liquidity>=100000&&volume>=100000&&buys>=30&&sells>=10&&buys/sells>=1.1&&change>=-5&&change<=35};
+ return {id:p.baseToken.address,symbol:p.baseToken.symbol||'?',price,liquidity,volume,change:Number.isFinite(change)&&p.priceChange?.h24!=null?change:null,buys,sells,age,link:p.url,eligible:Number(p.pairCreatedAt)>0&&age>=86400000&&liquidity>=100000&&volume>=100000&&buys>=30&&sells>=10&&buys/sells>=1.1&&change>=-5&&change<=35};
 }
 async function scan(){if(scanning)return;scanning=true;errors=[];document.getElementById('v2info').textContent='Scanning limited public token discovery feeds…';try{
  const feeds=await Promise.allSettled([json('https://api.dexscreener.com/token-profiles/latest/v1'),json('https://api.dexscreener.com/token-boosts/top/v1')]);
