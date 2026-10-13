@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>ORBIT AI — Solana Research v1.0</title>
+<style>
+:root{font-family:Inter,ui-sans-serif,system-ui;color-scheme:dark;background:#060c18;color:#edf3ff}*{box-sizing:border-box}body{margin:0}header{padding:17px 22px;border-bottom:1px solid #24324b;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;background:#0c1627}.brand{font-size:23px;font-weight:800;letter-spacing:2px}.brand em{color:#70d7ff;font-style:normal}.sub{font-size:11px;color:#9db2ce;letter-spacing:1px}.chip{display:inline-block;border-radius:20px;border:1px solid #32765d;padding:6px 10px;font-size:11px;color:#8cf0bb}.container{max-width:1550px;margin:auto;padding:16px;display:grid;gap:14px}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.metric,.panel{background:#0e1a2c;border:1px solid #263650;border-radius:12px;padding:15px}.metric small{display:block;color:#a4b6d1}.metric strong{display:block;font-size:23px;margin-top:7px}.cols{display:grid;grid-template-columns:1.5fr 1fr;gap:14px}.stack{display:grid;gap:14px;align-content:start}.top{display:flex;justify-content:space-between;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:12px}h2{font-size:14px;letter-spacing:1px;margin:0}h3{font-size:13px;margin:0}.info{color:#a9b9d2;font-size:12px;line-height:1.6}.warning{border:1px solid #675128;background:#211d17;padding:12px;border-radius:9px;font-size:12px;color:#f0d49d;line-height:1.6}button{background:#163b5b;color:#dff4ff;border:1px solid #35709c;border-radius:8px;padding:9px 11px;cursor:pointer}button:disabled{opacity:.35;cursor:not-allowed}.danger{background:#4d273a;border-color:#94536a}.row{border-top:1px solid #27374f;padding:11px 0;display:flex;justify-content:space-between;align-items:center;gap:10px}.row:first-child{border-top:0}.token{font-size:14px;font-weight:750;overflow-wrap:anywhere}.detail{font-size:11px;color:#9eb0c9;margin-top:4px;overflow-wrap:anywhere}.right{text-align:right}.good{color:#70e0af}.bad{color:#ff8597}.neutral{color:#c4d2e8}.actions{display:flex;gap:7px;align-items:center}input{width:92px;background:#081326;color:#fff;border:1px solid #375578;border-radius:7px;padding:9px}a{color:#7fd6ff}.agents{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.agent{background:#0a1424;border:1px solid #2a3a55;border-radius:9px;padding:12px}.agent p{font-size:11px;color:#a4b6cf;margin:6px 0 0;line-height:1.4}.tag{font-size:10px;color:#e5bc71}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;font-size:12px}td,th{text-align:left;padding:9px;border-bottom:1px solid #27364e;white-space:nowrap}th{color:#aac0dc}.foot{color:#8fa7c4;font-size:11px;line-height:1.7}#status{font-size:12px;color:#b3c8e3}.caps{font-size:10px;letter-spacing:1px;color:#78aede}#positions .row{align-items:start}@media(max-width:850px){.cols{grid-template-columns:1fr}}@media(max-width:550px){.container{padding:9px}.metrics{grid-template-columns:repeat(2,1fr)}.metric strong{font-size:19px}.agents{grid-template-columns:1fr}header{padding:13px}.actions{flex-direction:column}.row{align-items:flex-start}}
+</style></head><body>
+<header><div><div class="brand">◉ ORBIT <em>AI</em> <span class="caps">v1.0</span></div><div class="sub">SOLANA TOKEN INTELLIGENCE · RESEARCH LAB</div></div><div><span class="chip">PAPER ONLY</span> <span id="status">Connecting…</span></div></header>
+<main class="container">
+<section class="metrics"><div class="metric"><small>Paper equity</small><strong id="equity">$10,000.00</strong></div><div class="metric"><small>Available cash</small><strong id="cash">$10,000.00</strong></div><div class="metric"><small>Realized P&amp;L</small><strong id="pnl">$0.00</strong></div><div class="metric"><small>Open positions</small><strong id="count">0</strong></div></section>
+<div class="warning"><b>Research prototype:</b> Public DexScreener discovery and quotes when available; coverage is incomplete. Signals below are rule-based, not trained AI. Trades are hypothetical browser-local fills, not transactions. No wallet connection or real funds. Prices may be delayed or unavailable.</div>
+<section class="cols"><div class="stack">
+<div class="panel"><div class="top"><h2>◈ RECENT SOLANA PROFILES</h2><button id="refresh">Refresh</button></div><p class="info">Recently listed DexScreener token profiles are screened for available Solana pairs. This is <b>not</b> a full on-chain new-launch feed. Only tokens with retrievable USD quotes can be paper traded.</p><div id="feed"><p class="info">Fetching current market data…</p></div></div>
+<div class="panel"><div class="top"><h2>◈ OPEN PAPER POSITIONS</h2><span class="caps" id="updated">—</span></div><div id="positions"><p class="info">No positions</p></div></div>
+<div class="panel"><div class="top"><h2>◈ PAPER LEDGER</h2><button id="export">Export JSON</button></div><p class="info">Stored only on this browser. It is not server-backed or tamper-proof; do not treat it as audited proof of performance.</p><div class="tablewrap"><table><thead><tr><th>UTC time</th><th>Side</th><th>Token</th><th>Cash flow</th><th>Fill price</th><th>Fee</th><th>Realized P&amp;L</th></tr></thead><tbody id="history"></tbody></table></div></div>
+</div>
+<div class="stack">
+<div class="panel"><div class="top"><h2>◈ SIX-AGENT ARCHITECTURE</h2><span class="caps">IMPLEMENTATION STATUS</span></div><div class="agents">
+<div class="agent"><h3>SCOUT <span class="tag">LIVE LIMITED</span></h3><p>Recent token profiles, market quotes</p></div>
+<div class="agent"><h3>CARTOGRAPHER <span class="tag">PLANNED</span></h3><p>Funding and holder wallet graph</p></div>
+<div class="agent"><h3>JUDGE <span class="tag">PLANNED</span></h3><p>Trader histories and copybot risk</p></div>
+<div class="agent"><h3>QUANT <span class="tag">BASIC</span></h3><p>Liquidity and volume thresholds, not predictions</p></div>
+<div class="agent"><h3>GUARD <span class="tag">BASIC</span></h3><p>Reject low-liquidity pairs</p></div>
+<div class="agent"><h3>EXECUTOR <span class="tag">LOCAL</span></h3><p>Manual simulated buys and sells</p></div></div></div>
+<div class="panel"><div class="top"><h2>◈ PAPER EXECUTION</h2></div><label class="info" for="size">Order size, USD</label> <input id="size" type="number" value="50" min="1" max="1000" step="1"><p class="info">Buy fill: quote × 1.01. Sell fill: quote × 0.99. Fee: 0.5% on each trade. These are <b>fixed illustrative assumptions</b> and do not reproduce actual memecoin liquidity, transaction failures or priority fees.</p><button id="reset" class="danger">Reset local portfolio</button></div>
+<div class="panel"><h2>◈ SAFETY CHECKS</h2><p class="info">Tokens under $10,000 reported pair liquidity cannot be paper bought. Other contract risks, holder concentration, token freeze authority and honeypots are <b>not checked</b> in v1.0. Never mistake a passing liquidity check for a safety endorsement.</p></div>
+</div></section>
+<div class="foot">Data: <a href="https://docs.dexscreener.com/api/reference" target="_blank" rel="noopener noreferrer">DexScreener public API</a>. Public API may rate-limit and browsers may block requests. No API keys or wallet secrets are used. Refresh manually to reduce load. USD mark-to-market uses the most recent fetched quote and can be stale.</div>
+</main>
+<script>
+'use strict';
+const KEY='orbit-ai-v1-local-portfolio';
+const feeRate=.005, slip=.01;
+const money=n=>'$'+Number(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let state;
+try{state=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+if(!state||state.version!==1||!Array.isArray(state.ledger)||typeof state.cash!=='number') state={version:1,cash:10000,realized:0,positions:{},ledger:[]};
+let market=new Map(),loading=false;
+const save=()=>localStorage.setItem(KEY,JSON.stringify(state));
+async function request(url){const response=await fetch(url,{headers:{Accept:'application/json'}});if(!response.ok)throw Error('HTTP '+response.status);return response.json()}
+function bestPair(pairs,token){return (pairs||[]).filter(p=>p.chainId==='solana'&&p.baseToken?.address===token&&Number(p.priceUsd)>0).sort((a,b)=>Number(b.liquidity?.usd||0)-Number(a.liquidity?.usd||0))[0]}
+async function load(){
+ if(loading)return;loading=true;document.getElementById('status').textContent='Updating…';document.getElementById('refresh').disabled=true;
+ let discovered=0,failures=0;
+ try{
+ const profiles=await request('https://api.dexscreener.com/token-profiles/latest/v1');
+ const tokenAddresses=[...new Set((Array.isArray(profiles)?profiles:[]).filter(x=>x.chainId==='solana'&&x.tokenAddress).map(x=>x.tokenAddress))].slice(0,60);
+ if(!tokenAddresses.length)throw Error('No Solana profiles in current response');
+ // Fetch modest, sequential batches for public API courtesy.
+ const updated=new Map();
+ for(let i=0;i<tokenAddresses.length;i+=15){
+  try{
+   const pairs=await request('https://api.dexscreener.com/tokens/v1/solana/'+tokenAddresses.slice(i,i+15).join(','));
+   for(const token of tokenAddresses.slice(i,i+15)){const pair=bestPair(pairs,token);if(pair)updated.set(token,{token,name:pair.baseToken?.name||'Unknown',symbol:pair.baseToken?.symbol||'?',price:Number(pair.priceUsd),liquidity:Number(pair.liquidity?.usd||0),volume:Number(pair.volume?.h24||0),url:pair.url||''})}
+  }catch(e){failures++}
+ }
+ // Update held assets even if they have dropped out of recent profiles.
+ const held=Object.keys(state.positions);
+ for(let i=0;i<held.length;i+=15)try{
+  const pairs=await request('https://api.dexscreener.com/tokens/v1/solana/'+held.slice(i,i+15).join(','));
+  for(const token of held.slice(i,i+15)){const pair=bestPair(pairs,token);if(pair)updated.set(token,{token,name:pair.baseToken?.name||'Unknown',symbol:pair.baseToken?.symbol||'?',price:Number(pair.priceUsd),liquidity:Number(pair.liquidity?.usd||0),volume:Number(pair.volume?.h24||0),url:pair.url||''})}
+ }catch(e){failures++}
+ for(const [k,v] of updated)market.set(k,v);
+ discovered=tokenAddresses.length;
+ document.getElementById('status').textContent='Updated '+new Date().toLocaleTimeString()+(failures?' · partial':'');
+ document.getElementById('updated').textContent='Latest quote refresh '+new Date().toLocaleTimeString();
+ if(!updated.size)throw Error('No quotes returned');
+ }catch(e){document.getElementById('status').textContent='Feed unavailable';document.getElementById('feed').innerHTML='<p class="info">Could not retrieve public data: '+esc(e.message)+'. Retry later; no fabricated prices will be shown.</p>'}
+ finally{loading=false;document.getElementById('refresh').disabled=false;render()}
+}
+function buy(token){
+ const m=market.get(token),amount=Number(document.getElementById('size').value);
+ if(!m||!Number.isFinite(amount)||amount<1||amount>1000)return alert('Enter a valid order size from $1 to $1,000.');
+ if(m.liquidity<10000)return alert('GUARD: insufficient reported liquidity.');
+ if(amount>state.cash)return alert('Not enough paper cash.');
+ const price=m.price*(1+slip),fee=amount*feeRate,quantity=(amount-fee)/price;
+ if(!Number.isFinite(quantity)||quantity<=0)return;
+ const p=state.positions[token]||{quantity:0,cost:0,name:m.name,symbol:m.symbol};
+ p.quantity+=quantity;p.cost+=amount;p.name=m.name;p.symbol=m.symbol;state.positions[token]=p;state.cash-=amount;
+ state.ledger.push({time:new Date().toISOString(),side:'BUY',token,symbol:m.symbol,cashFlow:-amount,quantity,fillPrice:price,fee,realized:0,marketQuote:m.price});
+ save();render()
+}
+function sell(token){
+ const p=state.positions[token],m=market.get(token);
+ if(!p||!m||!Number.isFinite(m.price)||m.price<=0)return alert('A fresh usable quote is required to sell.');
+ const fill=m.price*(1-slip),gross=p.quantity*fill,fee=gross*feeRate,net=gross-fee,profit=net-p.cost;
+ state.cash+=net;state.realized+=profit;state.ledger.push({time:new Date().toISOString(),side:'SELL',token,symbol:p.symbol,cashFlow:net,quantity:p.quantity,fillPrice:fill,fee,realized:profit,marketQuote:m.price});delete state.positions[token];save();render()
+}
+function render(){
+ let rows=[...market.values()].sort((a,b)=>b.volume-a.volume).slice(0,35);
+ const feed=document.getElementById('feed');
+ if(rows.length)feed.innerHTML=rows.map(m=>'<div class="row"><div><div class="token">'+esc(m.symbol)+' <span class="detail">'+esc(m.name)+'</span></div><div class="detail">Price '+money(m.price)+' · Liquidity '+money(m.liquidity)+' · 24h vol '+money(m.volume)+'</div><div class="detail"><a href="'+esc(m.url)+'" target="_blank" rel="noopener noreferrer">View pair ↗</a> · '+(m.liquidity<10000?'<span class="bad">GUARD: low liquidity</span>':'<span class="good">Liquidity threshold passed (not safety verified)</span>')+'</div></div><div class="actions"><button data-buy="'+esc(m.token)+'" '+(m.liquidity<10000?'disabled':'')+'>Paper buy</button></div></div>').join('');
+ else if(!loading&&!feed.textContent.includes('Could not'))feed.innerHTML='<p class="info">No priced profiles available. Refresh to retry.</p>';
+ let held=Object.entries(state.positions),value=0,unpriced=0;
+ document.getElementById('positions').innerHTML=held.length?held.map(([token,p])=>{
+ const m=market.get(token),valid=!!(m&&m.price>0),mark=valid?p.quantity*m.price:0;
+ if(valid)value+=mark;else unpriced++;
+ return '<div class="row"><div><div class="token">'+esc(p.symbol)+'</div><div class="detail">'+p.quantity.toPrecision(6)+' tokens · Cost '+money(p.cost)+'</div><div class="detail">'+(valid?'Indicative mark '+money(mark)+' · P&L '+money(mark-p.cost):'<span class="bad">Quote unavailable: valuation unknown</span>')+'</div></div><button class="danger" data-sell="'+esc(token)+'" '+(!valid?'disabled':'')+'>Paper sell all</button></div>'}).join(''):'<p class="info">No open positions.</p>';
+ document.getElementById('cash').textContent=money(state.cash);
+ document.getElementById('equity').textContent=unpriced?'≥ '+money(state.cash+value)+'*':money(state.cash+value);
+ document.getElementById('equity').title=unpriced?'Some positions have no quote; displayed value is incomplete':'Current illustrative quote marks (excluding liquidation costs)';
+ document.getElementById('pnl').textContent=money(state.realized);
+ document.getElementById('pnl').className=state.realized<0?'bad':'good';
+ document.getElementById('count').textContent=held.length;
+ document.getElementById('history').innerHTML=state.ledger.length?[...state.ledger].reverse().slice(0,100).map(x=>'<tr><td>'+esc(x.time.slice(0,19))+'</td><td>'+esc(x.side)+'</td><td title="'+esc(x.token)+'">'+esc(x.symbol)+'</td><td>'+money(x.cashFlow)+'</td><td>$'+Number(x.fillPrice).toPrecision(6)+'</td><td>'+money(x.fee)+'</td><td>'+money(x.realized)+'</td></tr>').join(''):'<tr><td colspan="7">No paper fills yet</td></tr>';
+}
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.buy)buy(b.dataset.buy);if(b.dataset.sell)sell(b.dataset.sell)});
+document.getElementById('refresh').onclick=load;
+document.getElementById('reset').onclick=()=>{if(confirm('Delete all browser-local positions and history and reset to $10,000?')){state={version:1,cash:10000,realized:0,positions:{},ledger:[]};save();render()}};
+document.getElementById('export').onclick=()=>{const blob=new Blob([JSON.stringify({exportedAt:new Date().toISOString(),disclaimer:'Unaudited browser-local paper ledger',...state},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='orbit-ai-paper-ledger.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
+render();load();
+</script></body></html>
