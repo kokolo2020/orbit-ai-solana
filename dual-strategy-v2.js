@@ -38,7 +38,7 @@ async function scan(){if(scanning)return;scanning=true;errors=[];document.getEle
  if(!addresses.length)throw Error('No Solana token profiles returned');
  const union=[...new Set([...addresses,...Object.keys(db.established.positions)])],pairs=[];
  for(let i=0;i<union.length;i+=15)try{const part=union.slice(i,i+15),raw=await json('https://api.dexscreener.com/tokens/v1/solana/'+part.join(','));for(const id of part){const p=pairPick(raw,id);if(p)pairs.push(p)}}catch(e){errors.push(e.message)}
- const all=pairs.map(candidate),map=new Map(all.map(p=>[p.id,p]));results=addresses.map(a=>map.get(a)).filter(Boolean).sort((a,b)=>Number(b.eligible)-Number(a.eligible)||b.liquidity-a.liquidity);recent=results.filter(p=>p.age>=0&&p.age<600000).sort((a,b)=>a.age-b.age);lastCheck=new Date();
+ const all=pairs.map(candidate),map=new Map(all.map(p=>[p.id,p]));results=addresses.map(a=>map.get(a)).filter(p=>p&&Number.isFinite(p.liquidity)&&p.liquidity>0).sort((a,b)=>Number(b.eligible)-Number(a.eligible)||b.liquidity-a.liquidity);recent=results.filter(p=>p.age>=0&&p.age<600000).sort((a,b)=>a.age-b.age);lastCheck=new Date();
  for(const p of recent){if(!db.launch.observations.some(o=>o.id===p.id)){db.launch.observations.push({id:p.id,symbol:p.symbol,firstObserved:lastCheck.toISOString(),observedAgeMinutes:Math.round(p.age/60000),price:p.price,liquidity:p.liquidity})}}db.launch.observations=db.launch.observations.slice(-200);
  if(db.trial&&Date.now()>=db.trial.endsAt){db.auto=false;db.trial.status='COMPLETED'}
  if(db.auto)execute(map);persist();
