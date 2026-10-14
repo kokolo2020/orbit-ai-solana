@@ -3,7 +3,7 @@
 const ID='orbit-v2-dual-paper',usd=n=>'$'+Number(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 const safe=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let db;try{db=JSON.parse(localStorage.getItem(ID))}catch{}if(!db||db.version!==2)db={version:2,established:{cash:8000,positions:{},ledger:[]},launch:{budget:2000,observations:[]},auto:false};
-db.auto=false; // Never automatically resume trading after a browser reload.
+db.auto=!!(db.trial&&db.trial.status==='RUNNING'&&Date.now()<db.trial.endsAt&&db.auto); // Resume only an explicitly started, unexpired 12-hour trial.
 if(!Number.isFinite(db.maxDailyLossPct)||db.maxDailyLossPct<=0||db.maxDailyLossPct>100)db.maxDailyLossPct=5;
 if(!db.dailyRisk)db.dailyRisk={};
 if(db.trial&&db.trial.endsAt&&Date.now()>=db.trial.endsAt)db.auto=false;
